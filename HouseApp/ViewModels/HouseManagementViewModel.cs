@@ -123,6 +123,28 @@ public partial class HouseManagementViewModel : ObservableObject
             return;
         }
 
+        // Validate positive numbers
+        if (MonthlyRent < 0)
+        {
+            await Shell.Current.DisplayAlert("Error", "Monthly rent must be a positive number", "OK");
+            return;
+        }
+        if (UtilitiesCost < 0)
+        {
+            await Shell.Current.DisplayAlert("Error", "Utilities cost must be a positive number", "OK");
+            return;
+        }
+        if (WaterBillCost < 0)
+        {
+            await Shell.Current.DisplayAlert("Error", "Water bill cost must be a positive number", "OK");
+            return;
+        }
+        if (MaxOccupants < 1)
+        {
+            await Shell.Current.DisplayAlert("Error", "Maximum occupants must be at least 1", "OK");
+            return;
+        }
+
         try
         {
             IsLoading = true;
@@ -143,7 +165,7 @@ public partial class HouseManagementViewModel : ObservableObject
                 // Update existing house
                 await _apiService.PutAsync($"/api/houses/{HouseId}", updateDto);
                 await Shell.Current.DisplayAlert("Success", "House updated successfully", "OK");
-                await Shell.Current.GoToAsync("///tabs/dashboard");
+                IsEditMode = false; // Exit edit mode after successful save
             }
             else
             {
