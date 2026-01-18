@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Calendar"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" BackgroundColor="#6D28D9" Padding="16,12">
+            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                <Button Text="←" 
+                        FontSize="24"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackButtonClicked"/>
+                <Label Text="Calendar" 
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+	<ScrollView Grid.Row="1">
+		<VerticalStackLayout Padding="20" Spacing="16">
+
+			<!-- Header -->
+			<VerticalStackLayout Spacing="2">
+				<Label Text="Calendar"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" />
+				<Label Text="Plan chores and rent due dates"
+                       FontSize="14"
+                       TextColor="{StaticResource TextMuted}" />
+			</VerticalStackLayout>
+
+			<!-- Month selector (UI only) -->
+			<Frame CornerRadius="18"
+                   HasShadow="True"
+                   Padding="14"
+                   BackgroundColor="{StaticResource CardBg}">
+				<Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+					<Button Text="‹"
+                            FontSize="18"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextPrimary}" />
+					<Label Grid.Column="1"
+                           Text="January 2026"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" />
+					<Button Grid.Column="2"
+                            Text="›"
+                            FontSize="18"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextPrimary}" />
+				</Grid>
+			</Frame>
+
+			<!-- Weekday row -->
+			<Grid ColumnDefinitions="*,*,*,*,*,*,*" ColumnSpacing="6">
+				<Label Text="Mon" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Tue" Grid.Column="1" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Wed" Grid.Column="2" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Thu" Grid.Column="3" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Fri" Grid.Column="4" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Sat" Grid.Column="5" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+				<Label Text="Sun" Grid.Column="6" HorizontalTextAlignment="Center" FontSize="12" TextColor="{StaticResource TextMuted}"/>
+			</Grid>
+            <!-- Legend / status chips -->
+            <HorizontalStackLayout Spacing="10">
+                <Frame CornerRadius="14"
+           Padding="12,6"
+           HasShadow="False"
+           BackgroundColor="{StaticResource AccentLight}"
+           BorderColor="{StaticResource AccentBorder}">
+                    <Label Text="Rent"
+               FontSize="12"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Accent}" />
+                </Frame>
+
+                <Frame CornerRadius="14"
+           Padding="12,6"
+           HasShadow="False"
+           BackgroundColor="#ECFDF5"
+           BorderColor="#A7F3D0">
+                    <Label Text="Chore"
+               FontSize="12"
+               FontAttributes="Bold"
+               TextColor="#047857" />
+                </Frame>
+
+                <Frame CornerRadius="14"
+           Padding="12,6"
+           HasShadow="False"
+           BackgroundColor="{StaticResource CardBg}"
+           BorderColor="{StaticResource Border}">
+                    <Label Text="Tap dates later"
+               FontSize="12"
+               TextColor="{StaticResource TextMuted}" />
+                </Frame>
+            </HorizontalStackLayout>
+
+
+            <!-- Calendar grid (full month UI placeholder) -->
+			<Frame CornerRadius="18"
+                   HasShadow="False"
+                   Padding="12"
+                   BackgroundColor="{StaticResource CardBg}"
+                   BorderColor="{StaticResource Border}">
+
+				<!-- PASTE YOUR GRID HERE (the snippet you sent) -->
+				<Grid ColumnDefinitions="*,*,*,*,*,*,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                      ColumnSpacing="6"
+                      RowSpacing="8">
+
+					<!-- Row 1: blanks then 1-4 -->
+					<Frame Grid.Row="0" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="0" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="0" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+
+					<Frame Grid.Row="0" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="1" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="0" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="2" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="0" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="3" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="0" Grid.Column="6" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="4" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+
+					<!-- Row 2: 5-11 (Rent on 11) -->
+					<Frame Grid.Row="1" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="5" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="1" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="6" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="1" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="7" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="1" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="8" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="1" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="9" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="1" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="10" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+
+					<Frame Grid.Row="1" Grid.Column="6"
+                           CornerRadius="12"
+                           Padding="10"
+                           BackgroundColor="{StaticResource AccentLight}"
+                           BorderColor="{StaticResource AccentBorder}"
+                           HasShadow="False">
+						<VerticalStackLayout Spacing="2">
+							<Label Text="11" TextColor="{StaticResource TextPrimary}"/>
+							<Label Text="Rent" FontSize="10" TextColor="{StaticResource Accent}" />
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Row 3: 12-18 -->
+					<Frame Grid.Row="2" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="12" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="13" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="14" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="15" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="16" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="17" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="2" Grid.Column="6" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="18" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+
+					<!-- Row 4: 19-25 -->
+					<Frame Grid.Row="3" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="19" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="20" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="21" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="22" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="23" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="24" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="3" Grid.Column="6" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="25" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+
+					<!-- Row 5: 26-31 + blank -->
+					<Frame Grid.Row="4" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="26" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="27" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="28" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="29" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="30" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F9FAFB" BorderColor="{StaticResource Border}" HasShadow="False">
+						<Label Text="31" TextColor="{StaticResource TextPrimary}"/>
+					</Frame>
+					<Frame Grid.Row="4" Grid.Column="6" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+
+					<!-- Row 6: trailing blanks -->
+					<Frame Grid.Row="5" Grid.Column="0" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="1" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="2" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="3" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="4" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="5" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+					<Frame Grid.Row="5" Grid.Column="6" CornerRadius="12" Padding="10" BackgroundColor="#F3F4F6" BorderColor="{StaticResource Border}" HasShadow="False" Opacity="0.5"/>
+
+				</Grid>
+			</Frame>
+
+		</VerticalStackLayout>
+	</ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    x:DataType="viewModels:LoginViewModel"
+    Title="Login"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <VerticalStackLayout
+        Padding="30"
+        Spacing="20"
+        VerticalOptions="Center">
+
+        <Label
+            Text="HouseApp"
+            FontSize="32"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+            TextColor="{StaticResource Accent}" />
+
+        <Label Text="Name" 
+               FontSize="14" 
+               TextColor="{StaticResource TextMuted}" 
+               Margin="0,8,0,4"/>
+        <Border StrokeThickness="1" 
+                Stroke="{StaticResource Border}" 
+                BackgroundColor="White"
+                Padding="12"
+                Margin="0,8"
+                StrokeShape="RoundRectangle 8">
+            <Entry Placeholder="Enter your name"
+                   Text="{Binding Name}"
+                   TextColor="{StaticResource TextPrimary}"
+                   PlaceholderColor="{StaticResource TextMuted}"
+                   BackgroundColor="Transparent" />
+        </Border>
+
+        <Button
+            Text="Login"
+            Command="{Binding LoginCommand}"
+            BackgroundColor="{StaticResource Accent}"
+            TextColor="White" />
+    </VerticalStackLayout>
+</ContentPage>

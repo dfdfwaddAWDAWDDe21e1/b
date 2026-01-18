@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    x:DataType="viewModels:MainViewModel"
+    Title="HouseApp">
+
+    <VerticalStackLayout Padding="20" Spacing="14">
+        <Label Text="Welcome to HouseApp" FontSize="28" FontAttributes="Bold" />
+        <Label Text="Your first MAUI screen (MVVM)." FontSize="16" Opacity="0.8"/>
+
+        <Entry Placeholder="Type something..."
+               Text="{Binding InputText}" />
+
+        <Button Text="Show Alert"
+                Command="{Binding ShowAlertCommand}" />
+
+        <Label Text="{Binding OutputText}"
+               FontSize="16"
+               FontAttributes="Italic" />
+    </VerticalStackLayout>
+</ContentPage>

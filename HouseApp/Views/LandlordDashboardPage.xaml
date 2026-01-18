@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.LandlordDashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    xmlns:models="clr-namespace:HouseApp.Models"
+    x:DataType="viewModels:LandlordDashboardViewModel"
+    Title="Dashboard"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <Grid RowDefinitions="Auto,*" Padding="20" RowSpacing="18">
+
+        <!-- Stats Section -->
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Label
+                Text="Landlord Dashboard"
+                FontSize="26"
+                FontAttributes="Bold"
+                TextColor="{StaticResource TextPrimary}" />
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Frame Grid.Column="0" CornerRadius="16" Padding="14" BackgroundColor="{StaticResource CardBg}" HasShadow="True">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding TotalProperties}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Accent}" />
+                        <Label Text="Properties" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="1" CornerRadius="16" Padding="14" BackgroundColor="{StaticResource CardBg}" HasShadow="True">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding TotalTenants}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Accent}" />
+                        <Label Text="Tenants" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="2" CornerRadius="16" Padding="14" BackgroundColor="{StaticResource CardBg}" HasShadow="True">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding TotalMonthlyIncome, StringFormat='€{0:N0}'}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Accent}" />
+                        <Label Text="Income" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <Button
+                Text="+ Add New House"
+                Command="{Binding AddHouseCommand}"
+                BackgroundColor="{StaticResource Accent}"
+                TextColor="White"
+                CornerRadius="16" />
+        </VerticalStackLayout>
+
+        <!-- Houses List with RefreshView -->
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        Text="Your Properties"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}" />
+
+                    <!-- Loading Indicator -->
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                                     IsVisible="{Binding IsLoading}"
+                                     Color="{StaticResource Accent}"
+                                     HeightRequest="50"/>
+
+                    <!-- Empty State -->
+                    <VerticalStackLayout IsVisible="{Binding IsEmpty}"
+                                       Padding="40"
+                                       Spacing="16"
+                                       VerticalOptions="Center">
+                        <Label Text="🏠"
+                               FontSize="64"
+                               HorizontalOptions="Center"/>
+                        <Label Text="No properties yet"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Create your first property to get started"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"
+                               HorizontalOptions="Center"/>
+                        <Button Text="Create House"
+                                Command="{Binding AddHouseCommand}"
+                                BackgroundColor="{StaticResource Accent}"
+                                TextColor="White"
+                                CornerRadius="12"
+                                Padding="20,12"
+                                Margin="0,20,0,0"
+                                HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Houses Collection -->
+                    <CollectionView ItemsSource="{Binding Houses}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:House">
+                                <Frame CornerRadius="16" Padding="16" BackgroundColor="{StaticResource CardBg}" HasShadow="False" BorderColor="{StaticResource Border}" Margin="0,6">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:LandlordDashboardViewModel}}, Path=NavigateToHouseManagementCommand}" CommandParameter="{Binding}" />
+                                    </Frame.GestureRecognizers>
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
+                                        <Label Grid.Row="0" Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                                        <Label Grid.Row="1" Text="{Binding Address}" FontSize="13" TextColor="{StaticResource TextMuted}" />
+                                        <HorizontalStackLayout Grid.Row="2" Spacing="10">
+                                            <Frame CornerRadius="12" Padding="8,4" BackgroundColor="{StaticResource AccentLight}" BorderColor="{StaticResource AccentBorder}" HasShadow="False">
+                                                <Label Text="{Binding MonthlyRent, StringFormat='€{0:N0}/mo'}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Accent}" />
+                                            </Frame>
+                                            <Frame CornerRadius="12" Padding="8,4" BackgroundColor="{StaticResource CardBg}" BorderColor="{StaticResource Border}" HasShadow="False">
+                                                <Label Text="{Binding CurrentOccupants, StringFormat='{0} tenants'}" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                                            </Frame>
+                                        </HorizontalStackLayout>
+                                        <Label Grid.Column="1" Grid.RowSpan="3" Text="→" FontSize="20" VerticalOptions="Center" TextColor="{StaticResource TextMuted}" />
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

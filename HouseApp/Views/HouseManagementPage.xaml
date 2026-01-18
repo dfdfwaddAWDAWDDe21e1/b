@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HouseApp.ViewModels"
+             x:Class="HouseApp.Views.HouseManagementPage"
+             x:DataType="vm:HouseManagementViewModel"
+             Title="Edit House"
+             BackgroundColor="{StaticResource AppBg}">
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" BackgroundColor="#6D28D9" Padding="16,12">
+            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                <Button Text="←" 
+                        FontSize="24"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackButtonClicked"/>
+                <Label Text="{Binding IsEditMode, Converter={StaticResource BoolToObjectConverter}, ConverterParameter='Edit House|Add House'}" 
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    <ScrollView Grid.Row="1">
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- House Details Form -->
+            <Border StrokeThickness="1"
+                    Stroke="{StaticResource Border}"
+                    BackgroundColor="{StaticResource CardBg}"
+                    Padding="15"
+                    StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="15">
+                    
+                    <Label Text="House Details"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Address"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding Address}"
+                               Placeholder="Enter address"
+                               FontSize="16"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Maximum Occupants"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding MaxOccupants}"
+                               Keyboard="Numeric"
+                               Placeholder="Enter max occupants"
+                               FontSize="16"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="House Code (Share with students)"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Entry Text="{Binding HouseCode}"
+                                   IsReadOnly="True"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Accent}"
+                                   HorizontalOptions="FillAndExpand"/>
+                            <Button Text="📋"
+                                    Command="{Binding CopyHouseCodeCommand}"
+                                    BackgroundColor="{StaticResource AccentLight}"
+                                    TextColor="{StaticResource Accent}"
+                                    WidthRequest="50"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Save Changes Button -->
+            <Button Text="Save Changes"
+                    Command="{Binding SaveHouseCommand}"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White"
+                    FontSize="16"
+                    Padding="15"
+                    CornerRadius="10"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+
+            <!-- Delete House Button -->
+            <Button Text="Delete House"
+                    Command="{Binding DeleteHouseCommand}"
+                    BackgroundColor="#EF4444"
+                    TextColor="White"
+                    FontSize="16"
+                    Padding="15"
+                    CornerRadius="10"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="{StaticResource Accent}"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="HouseApp.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:HouseApp.Converters">
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Base -->
+            <Color x:Key="AppBg">#F5F6FA</Color>
+            <Color x:Key="TextPrimary">#111827</Color>
+            <Color x:Key="TextMuted">#6B7280</Color>
+            <Color x:Key="CardBg">#FFFFFF</Color>
+            <Color x:Key="Border">#E5E7EB</Color>
+
+            <Color x:Key="Accent">#6D28D9</Color>
+            <Color x:Key="AccentLight">#F3E8FF</Color>
+            <Color x:Key="AccentBorder">#D8B4FE</Color>
+
+            <!-- Converters -->
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" />
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

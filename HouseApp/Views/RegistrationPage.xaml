@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.RegistrationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    xmlns:models="clr-namespace:HouseApp.Models"
+    x:DataType="viewModels:RegistrationViewModel"
+    Title="Welcome"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+            <Label
+                Text="HouseApp"
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="{StaticResource Accent}" />
+
+            <Label
+                Text="{Binding IsLoginMode, Converter={StaticResource BoolToObjectConverter}, ConverterParameter='Welcome back!|Create your account'}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                TextColor="{StaticResource TextPrimary}" />
+
+            <!-- Login Form -->
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding IsLoginMode}">
+                <Label Text="Email" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="your.email@example.com"
+                           Text="{Binding Email}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent"
+                           Keyboard="{x:Static Keyboard.Email}" />
+                </Border>
+
+                <Label Text="Password" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,16,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="Enter your password"
+                           Text="{Binding Password}"
+                           IsPassword="True"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent" />
+                </Border>
+
+                <Button
+                    Text="Login"
+                    Command="{Binding LoginCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!-- Registration Form -->
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding IsLoginMode, Converter={StaticResource InvertedBoolConverter}}">
+                <Label Text="First Name" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="John"
+                           Text="{Binding FirstName}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent" />
+                </Border>
+
+                <Label Text="Last Name" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="Doe"
+                           Text="{Binding LastName}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent" />
+                </Border>
+
+                <Label Text="Email" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="your.email@example.com"
+                           Text="{Binding Email}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent"
+                           Keyboard="{x:Static Keyboard.Email}" />
+                </Border>
+
+                <Label Text="Phone Number" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="+1234567890"
+                           Text="{Binding PhoneNumber}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent"
+                           Keyboard="{x:Static Keyboard.Telephone}" />
+                </Border>
+
+                <Label Text="Date of Birth" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,16,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <DatePicker Date="{Binding DateOfBirth}"
+                                Format="dd MMMM yyyy"
+                                MinimumDate="1940-01-01"
+                                MaximumDate="{Binding MaximumDateOfBirth}"
+                                TextColor="{StaticResource TextPrimary}"
+                                BackgroundColor="Transparent"
+                                FontSize="16"/>
+                </Border>
+
+                <!-- User Type Selection -->
+                <Label Text="I am a" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,16,0,8"/>
+
+                <HorizontalStackLayout Spacing="10" Margin="0,0,0,16">
+                    <RadioButton Content="Student" 
+                                 GroupName="UserType"
+                                 IsChecked="{Binding IsStudent}"
+                                 TextColor="{StaticResource TextPrimary}"/>
+                    <RadioButton Content="Landlord" 
+                                 GroupName="UserType"
+                                 IsChecked="{Binding IsLandlord}"
+                                 TextColor="{StaticResource TextPrimary}"/>
+                </HorizontalStackLayout>
+
+                <Label Text="Password" 
+                       FontSize="14" 
+                       TextColor="{StaticResource TextMuted}" 
+                       Margin="0,8,0,4"/>
+                <Border StrokeThickness="1" 
+                        Stroke="{StaticResource Border}" 
+                        BackgroundColor="White"
+                        Padding="12"
+                        Margin="0,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Placeholder="Enter your password"
+                           Text="{Binding Password}"
+                           IsPassword="True"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           BackgroundColor="Transparent" />
+                </Border>
+
+                <Button
+                    Text="Register"
+                    Command="{Binding RegisterCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!-- Toggle Button -->
+            <Button
+                Text="{Binding IsLoginMode, Converter={StaticResource BoolToObjectConverter}, ConverterParameter='Need an account? Register|Already have an account? Login'}"
+                Command="{Binding ToggleModeCommand}"
+                BackgroundColor="Transparent"
+                TextColor="{StaticResource Accent}" />
+
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource Accent}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

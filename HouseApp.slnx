@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="HouseApp/HouseApp.csproj" />
+  <Project Path="HouseApp.API/HouseApp.API.csproj" />
+</Solution>

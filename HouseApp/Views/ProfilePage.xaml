@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    x:DataType="viewModels:ProfileViewModel"
+    Title="Profile"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" BackgroundColor="#6D28D9" Padding="16,12">
+            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                <Button Text="←" 
+                        FontSize="24"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackButtonClicked"/>
+                <Label Text="Profile" 
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    <ScrollView Grid.Row="1">
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- Header -->
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Profile"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" />
+                <Label Text="Manage your account"
+                       FontSize="14"
+                       TextColor="{StaticResource TextMuted}" />
+            </VerticalStackLayout>
+
+            <!-- Profile card -->
+            <Frame CornerRadius="18"
+                   HasShadow="True"
+                   Padding="16"
+                   BackgroundColor="{StaticResource CardBg}">
+
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+
+                    <!-- Profile picture placeholder -->
+                    <Frame Grid.RowSpan="3"
+                           WidthRequest="80"
+                           HeightRequest="80"
+                           CornerRadius="40"
+                           BackgroundColor="{StaticResource AccentLight}"
+                           BorderColor="{StaticResource AccentBorder}"
+                           HasShadow="False"
+                           VerticalOptions="Start">
+
+                        <Label Text="👤"
+                               FontSize="28"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource Accent}" />
+                    </Frame>
+
+                    <!-- Name -->
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Label Text="Name"
+                               FontSize="12"
+                               TextColor="#6B7280" />
+                        <Border StrokeThickness="1" 
+                                Stroke="#E5E7EB" 
+                                BackgroundColor="White"
+                                Padding="12"
+                                StrokeShape="RoundRectangle 8">
+                            <Entry Placeholder="Your name"
+                                   Text="{Binding FirstName}"
+                                   TextColor="#111827"
+                                   PlaceholderColor="#9CA3AF"
+                                   BackgroundColor="Transparent"
+                                   FontSize="16" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Change photo button -->
+                    <Frame Grid.Row="1" Grid.Column="1"
+                           CornerRadius="14"
+                           Padding="12,10"
+                           BackgroundColor="{StaticResource Accent}"
+                           HasShadow="False">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickProfilePictureCommand}" />
+                        </Frame.GestureRecognizers>
+                        <Label Text="Change profile picture"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </Frame>
+
+                    <!-- Email -->
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="1" Spacing="4">
+                        <Label Text="Email" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                        <Label Text="{Binding Email}" FontSize="14" TextColor="{StaticResource TextPrimary}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+
+            <!-- Logout Button -->
+            <Button
+                Text="Logout"
+                Command="{Binding LogoutCommand}"
+                BackgroundColor="#EF4444"
+                TextColor="White"
+                CornerRadius="16" />
+
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource Accent}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+    </Grid>
+</ContentPage>

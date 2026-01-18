@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HouseApp.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HouseApp.ViewModels"
+    x:DataType="viewModels:HomeViewModel"
+    Title="Home"
+    BackgroundColor="{StaticResource AppBg}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+
+            <!-- Top: Today's date -->
+            <VerticalStackLayout Spacing="2">
+                <Label Text="{Binding DayName}"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+                <Label Text="{Binding FullDate}"
+                       FontSize="14"
+                       TextColor="#6B7280" />
+            </VerticalStackLayout>
+
+            <!-- Rent Card -->
+            <Frame CornerRadius="18"
+       HasShadow="True"
+       Padding="0"
+       BackgroundColor="Transparent">
+
+                <Grid Padding="18">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#7C3AED" Offset="0.0" />
+                            <GradientStop Color="#4F46E5" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Grid.Background>
+
+                    <!-- Content when payment exists -->
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding HasNextPayment}">
+
+                        <!-- Top row: title + status chip -->
+                        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                            <Label Text="Monthly Rent"
+                       FontSize="14"
+                       TextColor="White"
+                       Opacity="0.9" />
+
+                            <!-- Status chip -->
+                            <Frame Grid.Column="1"
+                       CornerRadius="14"
+                       Padding="10,5"
+                       HasShadow="False"
+                       BackgroundColor="#FFFFFF"
+                       Opacity="0.22">
+                                <Label Text="{Binding NextPaymentStatus}"
+                           FontSize="11"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                            </Frame>
+                        </Grid>
+
+                        <Label Text="{Binding NextPaymentAmount}"
+                   FontSize="34"
+                   FontAttributes="Bold"
+                   TextColor="White" />
+
+                        <!-- Bottom row: due info chip + pay button -->
+                        <HorizontalStackLayout Spacing="8">
+                            <Frame CornerRadius="14"
+                       Padding="10,6"
+                       HasShadow="False"
+                       BackgroundColor="#FFFFFF"
+                       Opacity="0.18">
+                                <Label Text="{Binding NextPaymentDueDate}"
+                           FontSize="12"
+                           TextColor="White" />
+                            </Frame>
+
+                            <Frame CornerRadius="14"
+                       Padding="10,6"
+                       HasShadow="False"
+                       BackgroundColor="#FFFFFF"
+                       Opacity="0.3">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NavigateToPaymentCommand}" />
+                                </Frame.GestureRecognizers>
+                                <Label Text="Pay Now →"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Fallback content when no payment exists -->
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding HasNoNextPayment}" 
+                                        HorizontalOptions="Center" 
+                                        VerticalOptions="Center">
+                        <Label Text="No Pending Payments"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="You're all caught up! 🎉"
+                               FontSize="14"
+                               TextColor="White"
+                               Opacity="0.9"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Frame>
+
+
+            <!-- Chores Section -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Today's Chores"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                <!-- Empty state card (for now) -->
+                <Frame CornerRadius="18"
+                       HasShadow="False"
+                       Padding="16"
+                       BackgroundColor="White"
+                       BorderColor="#E5E7EB">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="🧹 No chores for today"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+                        <Label Text="Enjoy your free time!"
+                               FontSize="13"
+                               TextColor="#6B7280" />
+                    </VerticalStackLayout>
+                </Frame>
+                <!-- Chores status chips -->
+                <HorizontalStackLayout Spacing="10">
+                    <Frame CornerRadius="14"
+           Padding="12,6"
+           HasShadow="False"
+           BackgroundColor="{StaticResource AccentLight}"
+           BorderColor="{StaticResource AccentBorder}">
+                        <Label Text="No chores today"
+               FontSize="12"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Accent}" />
+                    </Frame>
+
+                    <Frame CornerRadius="14"
+           Padding="12,6"
+           HasShadow="False"
+           BackgroundColor="{StaticResource CardBg}"
+           BorderColor="{StaticResource Border}">
+                        <Label Text="0 pending"
+               FontSize="12"
+               TextColor="{StaticResource TextMuted}" />
+                    </Frame>
+                </HorizontalStackLayout>
+
+
+                <!-- Placeholder design for chore items (NOT real chores) -->
+                <Label Text="(Design preview)"
+                       FontSize="12"
+                       TextColor="#9CA3AF" />
+
+                <Frame CornerRadius="16"
+                       HasShadow="False"
+                       Padding="14"
+                       BackgroundColor="White"
+                       BorderColor="#E5E7EB"
+                       Opacity="0.6">
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <!-- Fake checkbox -->
+                        <Frame WidthRequest="22" HeightRequest="22"
+                               CornerRadius="6"
+                               HasShadow="False"
+                               BorderColor="#D1D5DB"
+                               BackgroundColor="#F9FAFB" />
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <BoxView HeightRequest="12" WidthRequest="200"
+                                     CornerRadius="6"
+                                     BackgroundColor="#E5E7EB" />
+                            <BoxView HeightRequest="10" WidthRequest="140"
+                                     CornerRadius="6"
+                                     BackgroundColor="#F3F4F6" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HouseApp.StudentShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:HouseApp.Views"
+    Shell.TabBarBackgroundColor="{StaticResource CardBg}"
+    Shell.TabBarForegroundColor="{StaticResource Accent}"
+    Shell.TabBarUnselectedColor="{StaticResource TextMuted}">
+
+    <!-- Theme resources live here to ensure they are available while Shell is parsing. -->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <!-- Base -->
+            <Color x:Key="AppBg">#F5F6FA</Color>
+            <Color x:Key="TextPrimary">#111827</Color>
+            <Color x:Key="TextMuted">#6B7280</Color>
+            <Color x:Key="CardBg">#FFFFFF</Color>
+            <Color x:Key="Border">#E5E7EB</Color>
+
+            <!-- Purple accent -->
+            <Color x:Key="Accent">#6D28D9</Color>
+            <Color x:Key="AccentLight">#F3E8FF</Color>
+            <Color x:Key="AccentBorder">#D8B4FE</Color>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <!-- House Search for Students not in a house -->
+    <ShellContent
+        Route="housesearch"
+        ContentTemplate="{DataTemplate views:HouseSearchPage}" />
+
+    <TabBar Route="tabs">
+        <ShellContent
+            Title="Home"
+            Icon="home.svg"
+            Route="home"
+            ContentTemplate="{DataTemplate views:HomePage}" />
+
+        <ShellContent
+            Title="Chat"
+            Icon="chat.svg"
+            Route="chat"
+            ContentTemplate="{DataTemplate views:ChatPage}" />
+
+        <ShellContent
+            Title="Calendar"
+            Icon="calendar.svg"
+            Route="calendar"
+            ContentTemplate="{DataTemplate views:CalendarPage}" />
+        
+        <ShellContent
+            Title="Profile"
+            Icon="profile.svg"
+            Route="profile"
+            ContentTemplate="{DataTemplate views:ProfilePage}" />
+    </TabBar>
+
+</Shell>
