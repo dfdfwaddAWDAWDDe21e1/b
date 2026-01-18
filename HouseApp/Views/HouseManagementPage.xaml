@@ -42,12 +42,56 @@
                            TextColor="{StaticResource TextPrimary}"/>
 
                     <VerticalStackLayout Spacing="5">
+                        <Label Text="House Name"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding HouseName}"
+                               Placeholder="Enter house name"
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Address"
                                FontSize="14"
                                TextColor="{StaticResource TextMuted}"/>
                         <Entry Text="{Binding Address}"
                                Placeholder="Enter address"
-                               FontSize="16"/>
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Monthly Rent (€)"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding MonthlyRent}"
+                               Keyboard="Numeric"
+                               Placeholder="Enter monthly rent"
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Utilities Cost (€)"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding UtilitiesCost}"
+                               Keyboard="Numeric"
+                               Placeholder="Enter utilities cost"
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Water Bill Cost (€)"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding WaterBillCost}"
+                               Keyboard="Numeric"
+                               Placeholder="Enter water bill cost"
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="5">
@@ -57,7 +101,18 @@
                         <Entry Text="{Binding MaxOccupants}"
                                Keyboard="Numeric"
                                Placeholder="Enter max occupants"
-                               FontSize="16"/>
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="House Password"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <Entry Text="{Binding HousePassword}"
+                               Placeholder="Enter house password"
+                               FontSize="16"
+                               IsEnabled="{Binding IsEditMode}"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="5">
@@ -82,7 +137,18 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Save Changes Button -->
+            <!-- Edit Button (shown when NOT in edit mode) -->
+            <Button Text="Edit House"
+                    Command="{Binding ToggleEditModeCommand}"
+                    BackgroundColor="#10B981"
+                    TextColor="White"
+                    FontSize="16"
+                    Padding="15"
+                    CornerRadius="10"
+                    IsVisible="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+            
+            <!-- Save and Cancel Buttons (shown when in edit mode) -->
             <Button Text="Save Changes"
                     Command="{Binding SaveHouseCommand}"
                     BackgroundColor="{StaticResource Accent}"
@@ -90,6 +156,17 @@
                     FontSize="16"
                     Padding="15"
                     CornerRadius="10"
+                    IsVisible="{Binding IsEditMode}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+            
+            <Button Text="Cancel"
+                    Command="{Binding ToggleEditModeCommand}"
+                    BackgroundColor="#6B7280"
+                    TextColor="White"
+                    FontSize="16"
+                    Padding="15"
+                    CornerRadius="10"
+                    IsVisible="{Binding IsEditMode}"
                     IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
 
             <!-- Delete House Button -->

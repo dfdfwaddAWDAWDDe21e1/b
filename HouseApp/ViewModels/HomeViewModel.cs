@@ -35,6 +35,11 @@ public partial class HomeViewModel : ObservableObject
         OnPropertyChanged(nameof(NextPaymentAmount));
         OnPropertyChanged(nameof(NextPaymentStatus));
         OnPropertyChanged(nameof(NextPaymentDueDate));
+        OnPropertyChanged(nameof(DaysUntilDue));
+        OnPropertyChanged(nameof(IsOverdue));
+        OnPropertyChanged(nameof(DaysUntilDueText));
+        OnPropertyChanged(nameof(StatusColor));
+        OnPropertyChanged(nameof(StatusText));
     }
 
     [ObservableProperty]
@@ -49,6 +54,39 @@ public partial class HomeViewModel : ObservableObject
     public string NextPaymentAmount => NextPayment != null ? $"€{NextPayment.Amount:N2}" : "€0.00";
     public string NextPaymentStatus => NextPayment?.Status.ToString() ?? "No Payment";
     public string NextPaymentDueDate => NextPayment != null ? $"Due: {NextPayment.DueDate:MMM dd}" : "No due date";
+    
+    // New computed properties for days until due
+    public int DaysUntilDue => NextPayment != null 
+        ? (NextPayment.DueDate.Date - DateTime.Now.Date).Days 
+        : 0;
+
+    public bool IsOverdue => NextPayment != null 
+        && NextPayment.DueDate.Date < DateTime.Now.Date 
+        && NextPayment.Status == PaymentStatus.Pending;
+
+    public string DaysUntilDueText => NextPayment == null 
+        ? "" 
+        : IsOverdue 
+            ? $"Overdue by {Math.Abs(DaysUntilDue)} days" 
+            : DaysUntilDue == 0 
+                ? "Due today" 
+                : $"Due in {DaysUntilDue} days";
+
+    public Color StatusColor => NextPayment == null 
+        ? Colors.Gray 
+        : NextPayment.Status == PaymentStatus.Completed 
+            ? Color.FromArgb("#10B981") // Green
+            : IsOverdue 
+                ? Color.FromArgb("#EF4444") // Red
+                : Color.FromArgb("#F59E0B"); // Orange/Yellow
+
+    public string StatusText => NextPayment == null 
+        ? "No Payment" 
+        : NextPayment.Status == PaymentStatus.Completed 
+            ? "Paid" 
+            : IsOverdue 
+                ? "Overdue" 
+                : "Pending";
 
     public HomeViewModel(AuthService authService, HouseService houseService, PaymentService paymentService)
     {

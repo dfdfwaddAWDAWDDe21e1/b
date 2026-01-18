@@ -46,14 +46,13 @@
                        TextColor="White"
                        Opacity="0.9" />
 
-                            <!-- Status chip -->
+                            <!-- Status chip with dynamic color -->
                             <Frame Grid.Column="1"
                        CornerRadius="14"
                        Padding="10,5"
                        HasShadow="False"
-                       BackgroundColor="#FFFFFF"
-                       Opacity="0.22">
-                                <Label Text="{Binding NextPaymentStatus}"
+                       BackgroundColor="{Binding StatusColor}">
+                                <Label Text="{Binding StatusText}"
                            FontSize="11"
                            FontAttributes="Bold"
                            TextColor="White" />
@@ -65,7 +64,15 @@
                    FontAttributes="Bold"
                    TextColor="White" />
 
-                        <!-- Bottom row: due info chip + pay button -->
+                        <!-- Days until due display -->
+                        <Label Text="{Binding DaysUntilDueText}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               Opacity="0.95"
+                               IsVisible="{Binding HasNextPayment}"/>
+
+                        <!-- Bottom row: due date chip + pay button -->
                         <HorizontalStackLayout Spacing="8">
                             <Frame CornerRadius="14"
                        Padding="10,6"
@@ -77,15 +84,32 @@
                            TextColor="White" />
                             </Frame>
 
+                            <!-- Pay Now button only for pending payments -->
                             <Frame CornerRadius="14"
                        Padding="10,6"
                        HasShadow="False"
                        BackgroundColor="#FFFFFF"
-                       Opacity="0.3">
+                       Opacity="0.3"
+                       IsVisible="{Binding IsOverdue, Converter={StaticResource InvertedBoolConverter}}">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding NavigateToPaymentCommand}" />
                                 </Frame.GestureRecognizers>
                                 <Label Text="Pay Now →"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                            </Frame>
+                            
+                            <!-- Overdue warning button -->
+                            <Frame CornerRadius="14"
+                       Padding="10,6"
+                       HasShadow="False"
+                       BackgroundColor="#EF4444"
+                       IsVisible="{Binding IsOverdue}">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NavigateToPaymentCommand}" />
+                                </Frame.GestureRecognizers>
+                                <Label Text="Pay Overdue →"
                            FontSize="12"
                            FontAttributes="Bold"
                            TextColor="White" />

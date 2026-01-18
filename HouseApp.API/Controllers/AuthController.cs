@@ -24,6 +24,80 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<LoginResponseDto>> Register(RegisterDto dto)
     {
+        // Server-side validation
+        
+        // First Name validation
+        if (string.IsNullOrWhiteSpace(dto.FirstName) || dto.FirstName.Length < 2)
+        {
+            return BadRequest(new { message = "First name must be at least 2 characters" });
+        }
+        if (dto.FirstName.Any(char.IsDigit))
+        {
+            return BadRequest(new { message = "First name cannot contain numbers" });
+        }
+        if (!dto.FirstName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+        {
+            return BadRequest(new { message = "First name must contain only letters" });
+        }
+
+        // Last Name validation
+        if (string.IsNullOrWhiteSpace(dto.LastName) || dto.LastName.Length < 2)
+        {
+            return BadRequest(new { message = "Last name must be at least 2 characters" });
+        }
+        if (dto.LastName.Any(char.IsDigit))
+        {
+            return BadRequest(new { message = "Last name cannot contain numbers" });
+        }
+        if (!dto.LastName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+        {
+            return BadRequest(new { message = "Last name must contain only letters" });
+        }
+
+        // Email validation
+        if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains('@') || !dto.Email.Contains('.'))
+        {
+            return BadRequest(new { message = "Please enter a valid email address" });
+        }
+
+        // Phone Number validation
+        if (string.IsNullOrWhiteSpace(dto.PhoneNumber))
+        {
+            return BadRequest(new { message = "Phone number is required" });
+        }
+        var digitsOnly = new string(dto.PhoneNumber.Where(char.IsDigit).ToArray());
+        if (digitsOnly.Length < 10)
+        {
+            return BadRequest(new { message = "Phone number must contain at least 10 digits" });
+        }
+
+        // Password validation
+        if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
+        {
+            return BadRequest(new { message = "Password must be at least 8 characters" });
+        }
+        if (!dto.Password.Any(char.IsUpper))
+        {
+            return BadRequest(new { message = "Password must contain at least one uppercase letter" });
+        }
+        if (!dto.Password.Any(char.IsLower))
+        {
+            return BadRequest(new { message = "Password must contain at least one lowercase letter" });
+        }
+        if (!dto.Password.Any(char.IsDigit))
+        {
+            return BadRequest(new { message = "Password must contain at least one number" });
+        }
+
+        // Age validation (18+)
+        var currentAge = DateTime.UtcNow.Year - dto.DateOfBirth.Year;
+        if (dto.DateOfBirth > DateTime.UtcNow.AddYears(-currentAge)) currentAge--;
+        if (currentAge < 18)
+        {
+            return BadRequest(new { message = "You must be at least 18 years old to register" });
+        }
+
+        // Check if email already exists
         if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
         {
             return BadRequest(new { message = "Email already registered" });

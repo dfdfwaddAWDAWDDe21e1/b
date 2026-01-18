@@ -35,13 +35,13 @@
                    TextColor="#111827"
                    Margin="0,20,0,10"/>
             
-            <Label Text="Enter the house code or password provided by your landlord to join." 
+            <Label Text="Enter the house code provided by your landlord to join." 
                    FontSize="14" 
                    TextColor="#6B7280"
                    Margin="0,0,0,20"/>
 
-            <!-- House Code/Password Input -->
-            <Label Text="House Code or Password" 
+            <!-- House Code Input -->
+            <Label Text="House Code" 
                    FontSize="14" 
                    TextColor="#6B7280" 
                    Margin="0,8,0,4"/>
@@ -52,12 +52,13 @@
                     Padding="12"
                     Margin="0,8"
                     StrokeShape="RoundRectangle 8">
-                <Entry Placeholder="Enter house code"
+                <Entry Placeholder="Enter 6-digit house code (e.g., ABCD12)"
                        Text="{Binding HouseCode}"
                        TextColor="#111827"
                        PlaceholderColor="#9CA3AF"
                        BackgroundColor="Transparent"
-                       FontSize="16"/>
+                       FontSize="16"
+                       MaxLength="6"/>
             </Border>
 
             <!-- Join Button -->
@@ -68,119 +69,38 @@
                     FontSize="16"
                     CornerRadius="8"
                     HeightRequest="50"
-                    Margin="0,10"/>
-
-            <!-- Or Divider -->
-            <Grid ColumnDefinitions="*,Auto,*" Margin="0,20,0,10">
-                <BoxView Grid.Column="0" HeightRequest="1" BackgroundColor="#E5E7EB" VerticalOptions="Center"/>
-                <Label Grid.Column="1" Text="OR" FontSize="12" TextColor="#6B7280" Margin="10,0"/>
-                <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="#E5E7EB" VerticalOptions="Center"/>
-            </Grid>
-
-            <!-- Browse Houses -->
-            <Label Text="Browse Available Houses" 
-                   FontSize="18" 
-                   FontAttributes="Bold"
-                   TextColor="#111827"
-                   Margin="0,10,0,10"/>
+                    Margin="0,10"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"/>
 
             <!-- Activity Indicator -->
             <ActivityIndicator IsRunning="{Binding IsLoading}" 
                              Color="#6D28D9"
-                             Margin="0,20"/>
+                             Margin="0,20"
+                             IsVisible="{Binding IsLoading}"/>
 
-            <!-- Houses List -->
-            <CollectionView ItemsSource="{Binding AvailableHouses}"
-                          SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeThickness="1" 
-                                Stroke="#E5E7EB" 
-                                BackgroundColor="White"
-                                Padding="16"
-                                Margin="0,0,0,12"
-                                StrokeShape="RoundRectangle 12">
-                            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto">
-                                
-                                <!-- House Name -->
-                                <Label Grid.Row="0" Grid.Column="0"
-                                       Text="{Binding Name}"
-                                       FontSize="18"
-                                       FontAttributes="Bold"
-                                       TextColor="#111827"/>
-                                
-                                <!-- Address -->
-                                <Label Grid.Row="1" Grid.Column="0"
-                                       Text="{Binding Address}"
-                                       FontSize="14"
-                                       TextColor="#6B7280"
-                                       Margin="0,4,0,0"/>
-                                
-                                <!-- Rent Info -->
-                                <Label Grid.Row="2" Grid.Column="0"
-                                       FontSize="14"
-                                       TextColor="#6B7280"
-                                       Margin="0,8,0,0">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="Monthly: €" FontAttributes="Bold"/>
-                                            <Span Text="{Binding MonthlyRent}" FontAttributes="Bold"/>
-                                            <Span Text=" | Available Spots: "/>
-                                            <Span Text="{Binding AvailableSpots}"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-
-                                <!-- Password Input -->
-                                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                                        StrokeThickness="1" 
-                                        Stroke="#E5E7EB" 
-                                        BackgroundColor="#F9FAFB"
-                                        Padding="8"
-                                        Margin="0,12,0,8"
-                                        StrokeShape="RoundRectangle 6">
-                                    <Entry Placeholder="Enter house password"
-                                           Text="{Binding Password}"
-                                           TextColor="#111827"
-                                           PlaceholderColor="#9CA3AF"
-                                           BackgroundColor="Transparent"
-                                           FontSize="14"
-                                           IsPassword="True"/>
-                                </Border>
-
-                                <!-- Join Button -->
-                                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                                        Text="Join This House"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HouseSearchViewModel}}, Path=JoinSpecificHouseCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#6D28D9"
-                                        TextColor="White"
-                                        FontSize="14"
-                                        CornerRadius="6"
-                                        HeightRequest="40"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <!-- Empty State -->
-            <VerticalStackLayout IsVisible="{Binding IsEmpty}" 
-                               Padding="20" 
-                               Spacing="10"
-                               VerticalOptions="Center">
-                <Label Text="🏠" 
-                       FontSize="48" 
-                       HorizontalOptions="Center"/>
-                <Label Text="No houses available" 
-                       FontSize="16" 
-                       TextColor="#6B7280"
-                       HorizontalOptions="Center"/>
-                <Label Text="Contact your landlord for a house code" 
-                       FontSize="14" 
-                       TextColor="#9CA3AF"
-                       HorizontalOptions="Center"/>
-            </VerticalStackLayout>
+            <!-- Info Box -->
+            <Border StrokeThickness="1" 
+                    Stroke="#E5E7EB" 
+                    BackgroundColor="#F9FAFB"
+                    Padding="16"
+                    Margin="0,20,0,0"
+                    StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="ℹ️ How to Join" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="#111827"/>
+                    <Label FontSize="14" TextColor="#6B7280" LineBreakMode="WordWrap">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="1. Get the house code from your landlord&#10;"/>
+                                <Span Text="2. Enter the 6-digit code above&#10;"/>
+                                <Span Text="3. Click 'Join House' to send your request"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>
