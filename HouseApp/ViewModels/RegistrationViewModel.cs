@@ -67,11 +67,110 @@ public partial class RegistrationViewModel : ObservableObject
     [ObservableProperty]
     private bool isLoginMode = true;
 
+    [ObservableProperty]
+    private string errorMessage = string.Empty;
+
     public RegistrationViewModel(AuthService authService, UserSession userSession, ApiService apiService)
     {
         _authService = authService;
         _userSession = userSession;
         _apiService = apiService;
+    }
+
+    private bool ValidateRegistration(out string error)
+    {
+        // First Name validation
+        if (string.IsNullOrWhiteSpace(FirstName) || FirstName.Length < 2)
+        {
+            error = "First name must be at least 2 characters";
+            return false;
+        }
+        if (FirstName.Any(char.IsDigit))
+        {
+            error = "First name cannot contain numbers";
+            return false;
+        }
+        if (!FirstName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+        {
+            error = "First name must contain only letters";
+            return false;
+        }
+
+        // Last Name validation
+        if (string.IsNullOrWhiteSpace(LastName) || LastName.Length < 2)
+        {
+            error = "Last name must be at least 2 characters";
+            return false;
+        }
+        if (LastName.Any(char.IsDigit))
+        {
+            error = "Last name cannot contain numbers";
+            return false;
+        }
+        if (!LastName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+        {
+            error = "Last name must contain only letters";
+            return false;
+        }
+
+        // Email validation
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            error = "Email is required";
+            return false;
+        }
+        if (!Email.Contains('@') || !Email.Contains('.'))
+        {
+            error = "Please enter a valid email address";
+            return false;
+        }
+
+        // Phone Number validation
+        if (string.IsNullOrWhiteSpace(PhoneNumber))
+        {
+            error = "Phone number is required";
+            return false;
+        }
+        var digitsOnly = new string(PhoneNumber.Where(char.IsDigit).ToArray());
+        if (digitsOnly.Length < 10)
+        {
+            error = "Phone number must contain at least 10 digits";
+            return false;
+        }
+
+        // Password validation
+        if (string.IsNullOrWhiteSpace(Password) || Password.Length < 8)
+        {
+            error = "Password must be at least 8 characters";
+            return false;
+        }
+        if (!Password.Any(char.IsUpper))
+        {
+            error = "Password must contain at least one uppercase letter";
+            return false;
+        }
+        if (!Password.Any(char.IsLower))
+        {
+            error = "Password must contain at least one lowercase letter";
+            return false;
+        }
+        if (!Password.Any(char.IsDigit))
+        {
+            error = "Password must contain at least one number";
+            return false;
+        }
+
+        // Age validation (18+)
+        var age = DateTime.Now.Year - DateOfBirth.Year;
+        if (DateTime.Now < DateOfBirth.AddYears(age)) age--;
+        if (age < 18)
+        {
+            error = "You must be at least 18 years old to register";
+            return false;
+        }
+
+        error = string.Empty;
+        return true;
     }
 
     private async Task<bool> CheckIfStudentInHouse(int studentId)
@@ -179,11 +278,14 @@ public partial class RegistrationViewModel : ObservableObject
     [RelayCommand]
     private async Task RegisterAsync()
     {
-        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) ||
-            string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName) ||
-            string.IsNullOrWhiteSpace(PhoneNumber))
+        // Clear previous error
+        ErrorMessage = string.Empty;
+
+        // Validate all fields
+        if (!ValidateRegistration(out string error))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Please fill all fields", "OK");
+            ErrorMessage = error;
+            await Application.Current!.MainPage!.DisplayAlert("Validation Error", error, "OK");
             return;
         }
 
