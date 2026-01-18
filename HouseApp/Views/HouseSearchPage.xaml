@@ -52,7 +52,7 @@
                     Padding="12"
                     Margin="0,8"
                     StrokeShape="RoundRectangle 8">
-                <Entry Placeholder="Enter 6-digit house code (e.g., ABC123)"
+                <Entry Placeholder="Enter 6-digit house code (e.g., ABCD12)"
                        Text="{Binding HouseCode}"
                        TextColor="#111827"
                        PlaceholderColor="#9CA3AF"
