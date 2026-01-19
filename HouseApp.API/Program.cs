@@ -77,6 +77,10 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPaymentService, StripePaymentService>();
 
+// Optional: Add Arduino sensor background service
+// Set "Arduino:Enabled": true in appsettings.json to enable
+builder.Services.AddHostedService<ArduinoSensorService>();
+
 // Add OpenAPI
 builder.Services.AddOpenApi();
 
