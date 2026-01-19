@@ -3,9 +3,10 @@ using HouseApp.DTOs;
 
 namespace HouseApp.Services;
 
-public class SensorService
+public class SensorService : IDisposable
 {
     private HubConnection? _hubConnection;
+    private bool _disposed;
 
     public event Action<SensorReadingDto>? SensorDataReceived;
 
@@ -20,5 +21,15 @@ public class SensorService
     {
         System.Diagnostics.Debug.WriteLine($"Sensor reading received: Temp={data.TempC}°C, Humidity={data.Humidity}%");
         SensorDataReceived?.Invoke(data);
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            // Clear event handlers
+            SensorDataReceived = null;
+            _disposed = true;
+        }
     }
 }

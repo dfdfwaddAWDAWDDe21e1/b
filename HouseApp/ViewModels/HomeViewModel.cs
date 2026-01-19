@@ -7,13 +7,14 @@ using System.Collections.ObjectModel;
 
 namespace HouseApp.ViewModels;
 
-public partial class HomeViewModel : ObservableObject
+public partial class HomeViewModel : ObservableObject, IDisposable
 {
     private readonly AuthService _authService;
     private readonly HouseService _houseService;
     private readonly PaymentService _paymentService;
     private readonly SensorService _sensorService;
     private readonly ApiService _apiService;
+    private bool _disposed;
 
     [ObservableProperty]
     private string dayName = DateTime.Now.ToString("dddd");
@@ -190,5 +191,14 @@ public partial class HomeViewModel : ObservableObject
             Humidity = data.Humidity;
             System.Diagnostics.Debug.WriteLine($"Sensor data updated: Temp={Temperature}°C, Humidity={Humidity}%");
         });
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _sensorService.SensorDataReceived -= OnSensorDataReceived;
+            _disposed = true;
+        }
     }
 }

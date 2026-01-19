@@ -43,6 +43,7 @@ public class ArduinoSensorService : BackgroundService
         try
         {
             _serialPort = new SerialPort(portName, baudRate);
+            _serialPort.ReadTimeout = 5000; // 5 second timeout to prevent hanging
             _serialPort.Open();
             _logger.LogInformation($"Arduino sensor service started on port {portName}");
 
@@ -50,8 +51,11 @@ public class ArduinoSensorService : BackgroundService
             {
                 try
                 {
-                    var json = _serialPort.ReadLine();
-                    _logger.LogDebug($"Received data: {json}");
+                    // Check if data is available before reading
+                    if (_serialPort.BytesToRead > 0)
+                    {
+                        var json = _serialPort.ReadLine();
+                        _logger.LogDebug($"Received data: {json}");
 
                     var data = JsonSerializer.Deserialize<SensorData>(json);
                     if (data == null || float.IsNaN(data.TempC) || float.IsNaN(data.Humidity))
@@ -88,6 +92,12 @@ public class ArduinoSensorService : BackgroundService
                             Timestamp = reading.Timestamp,
                             DeviceId = reading.DeviceId
                         }, stoppingToken);
+                    }
+                    else
+                    {
+                        // No data available, wait a bit before checking again
+                        await Task.Delay(100, stoppingToken);
+                    }
                 }
                 catch (TimeoutException)
                 {
