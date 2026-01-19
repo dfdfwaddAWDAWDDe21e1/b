@@ -70,11 +70,49 @@ public partial class ProfileViewModel : ObservableObject
 
         if (!confirm) return;
 
-        await _authService.LogoutAsync();
-        _userSession.Clear();
-        
-        // Switch back to AppShell which contains the login route
-        var appShell = _serviceProvider.GetRequiredService<AppShell>();
-        Application.Current.MainPage = appShell;
+        try
+        {
+            // Get ChatService to disconnect SignalR
+            var chatService = _serviceProvider.GetService<ChatService>();
+            if (chatService != null)
+            {
+                try
+                {
+                    await chatService.DisconnectAsync();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error disconnecting chat: {ex.Message}");
+                }
+            }
+
+            // Clear session and secure storage
+            _userSession.Clear();
+            await _authService.LogoutAsync();
+            
+            // Navigate to login page using AppShell
+            var appShell = _serviceProvider.GetRequiredService<AppShell>();
+            Application.Current.MainPage = appShell;
+            
+            // Navigate to login route
+            await Shell.Current.GoToAsync("//login");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Logout error: {ex.Message}");
+            
+            // Force navigate to login even if error occurs
+            try
+            {
+                var appShell = _serviceProvider.GetRequiredService<AppShell>();
+                Application.Current.MainPage = appShell;
+                await Shell.Current.GoToAsync("//login");
+            }
+            catch (Exception navEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"Navigation error: {navEx.Message}");
+                await Application.Current!.MainPage!.DisplayAlert("Error", "Please restart the application", "OK");
+            }
+        }
     }
 }

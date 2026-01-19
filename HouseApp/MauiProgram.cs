@@ -29,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ApiService>();
         builder.Services.AddSingleton<AuthService>();
         builder.Services.AddSingleton<ChatService>();
+        builder.Services.AddSingleton<SensorService>();
         builder.Services.AddSingleton<PaymentService>();
         builder.Services.AddSingleton<HouseService>();
 

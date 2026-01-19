@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HouseApp.DTOs;
 using HouseApp.Models;
 using HouseApp.Services;
 using System.Collections.ObjectModel;
@@ -11,6 +12,8 @@ public partial class HomeViewModel : ObservableObject
     private readonly AuthService _authService;
     private readonly HouseService _houseService;
     private readonly PaymentService _paymentService;
+    private readonly SensorService _sensorService;
+    private readonly ApiService _apiService;
 
     [ObservableProperty]
     private string dayName = DateTime.Now.ToString("dddd");
@@ -26,6 +29,13 @@ public partial class HomeViewModel : ObservableObject
 
     [ObservableProperty]
     private Payment? nextPayment;
+
+    // Sensor properties
+    [ObservableProperty]
+    private decimal temperature;
+
+    [ObservableProperty]
+    private decimal humidity;
 
     // Notify UI when NextPayment changes
     partial void OnNextPaymentChanged(Payment? value)
@@ -88,16 +98,21 @@ public partial class HomeViewModel : ObservableObject
                 ? "Overdue" 
                 : "Pending";
 
-    public HomeViewModel(AuthService authService, HouseService houseService, PaymentService paymentService)
+    public HomeViewModel(AuthService authService, HouseService houseService, PaymentService paymentService, SensorService sensorService, ApiService apiService)
     {
         _authService = authService;
         _houseService = houseService;
         _paymentService = paymentService;
+        _sensorService = sensorService;
+        _apiService = apiService;
     }
 
     public async Task InitializeAsync()
     {
         await LoadDataAsync();
+        await LoadLatestSensorData();
+        
+        _sensorService.SensorDataReceived += OnSensorDataReceived;
     }
 
     [RelayCommand]
@@ -138,5 +153,42 @@ public partial class HomeViewModel : ObservableObject
         {
             await Shell.Current.GoToAsync($"payment?paymentId={NextPayment.Id}");
         }
+    }
+
+    private async Task LoadLatestSensorData()
+    {
+        try
+        {
+            if (CurrentHouse == null || CurrentHouse.Id == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("No current house, skipping sensor data load");
+                return;
+            }
+
+            var reading = await _apiService.GetAsync<SensorReadingDto>(
+                $"/api/sensors/house/{CurrentHouse.Id}/latest");
+
+            if (reading != null)
+            {
+                Temperature = reading.TempC;
+                Humidity = reading.Humidity;
+                System.Diagnostics.Debug.WriteLine($"Loaded sensor data: Temp={Temperature}°C, Humidity={Humidity}%");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load sensor data: {ex.Message}");
+            // Don't show error to user - sensor data is optional
+        }
+    }
+
+    private void OnSensorDataReceived(SensorReadingDto data)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Temperature = data.TempC;
+            Humidity = data.Humidity;
+            System.Diagnostics.Debug.WriteLine($"Sensor data updated: Temp={Temperature}°C, Humidity={Humidity}%");
+        });
     }
 }

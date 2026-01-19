@@ -291,6 +291,14 @@ public partial class HouseManagementViewModel : ObservableObject
     [RelayCommand]
     private async Task RemoveTenant(int tenantId)
     {
+        var confirm = await Shell.Current.DisplayAlert(
+            "Confirm", 
+            "Are you sure you want to remove this tenant?", 
+            "Yes", 
+            "No");
+
+        if (!confirm) return;
+
         try
         {
             IsLoading = true;
@@ -299,7 +307,7 @@ public partial class HouseManagementViewModel : ObservableObject
 
             if (success)
             {
-                await Shell.Current.DisplayAlert("Success", "Tenant removed from house", "OK");
+                await Shell.Current.DisplayAlert("Success", "Tenant removed successfully", "OK");
                 await LoadTenants();
             }
         }
