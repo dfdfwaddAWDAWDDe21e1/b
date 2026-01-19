@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<HouseTenant> HouseTenants { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<SensorReading> SensorReadings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,6 +90,20 @@ public class AppDbContext : DbContext
 
             entity.HasOne(e => e.House)
                 .WithMany(h => h.Messages)
+                .HasForeignKey(e => e.HouseId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // SensorReading entity
+        modelBuilder.Entity<SensorReading>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Temperature).HasPrecision(5, 2);
+            entity.Property(e => e.Humidity).HasPrecision(5, 2);
+            entity.HasIndex(e => new { e.HouseId, e.Timestamp });
+
+            entity.HasOne(e => e.House)
+                .WithMany()
                 .HasForeignKey(e => e.HouseId)
                 .OnDelete(DeleteBehavior.Cascade);
         });

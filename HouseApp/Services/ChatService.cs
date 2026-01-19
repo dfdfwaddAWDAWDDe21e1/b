@@ -8,15 +8,17 @@ public class ChatService
 {
     private HubConnection? _hubConnection;
     private readonly AuthService _authService;
+    private readonly SensorService _sensorService;
     private bool _isConnecting;
 
     public event Action<ChatMessage>? MessageReceived;
     public event Action<string>? ConnectionStatusChanged;
     public bool IsConnected => _hubConnection?.State == HubConnectionState.Connected;
 
-    public ChatService(AuthService authService)
+    public ChatService(AuthService authService, SensorService sensorService)
     {
         _authService = authService;
+        _sensorService = sensorService;
     }
 
     public async Task InitializeAsync()
@@ -100,6 +102,9 @@ public class ChatService
                     IsCurrentUser = message.SenderId == currentUserId
                 });
             });
+
+            // Initialize sensor service with the hub connection
+            _sensorService.Initialize(_hubConnection);
 
             // Start connection
             ConnectionStatusChanged?.Invoke("Connecting...");

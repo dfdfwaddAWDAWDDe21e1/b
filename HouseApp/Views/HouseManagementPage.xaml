@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:HouseApp.ViewModels"
+             xmlns:dto="clr-namespace:HouseApp.DTOs"
+             xmlns:viewmodels="clr-namespace:HouseApp.ViewModels"
              x:Class="HouseApp.Views.HouseManagementPage"
              x:DataType="vm:HouseManagementViewModel"
              Title="Edit House"
@@ -178,6 +180,65 @@
                     Padding="15"
                     CornerRadius="10"
                     IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+
+            <!-- Tenants Section -->
+            <Border StrokeThickness="1"
+                    Stroke="{StaticResource Border}"
+                    BackgroundColor="{StaticResource CardBg}"
+                    Padding="15"
+                    StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="15">
+                    
+                    <Label Text="Tenants"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"/>
+
+                    <!-- Add Tenant Section -->
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Add Tenant by Email"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMuted}"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Entry Text="{Binding StudentEmail}"
+                                   Placeholder="student@example.com"
+                                   FontSize="16"
+                                   HorizontalOptions="FillAndExpand"/>
+                            <Button Text="Add"
+                                    Command="{Binding AddTenantCommand}"
+                                    BackgroundColor="#10B981"
+                                    TextColor="White"
+                                    WidthRequest="80"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!-- Tenants List -->
+                    <CollectionView ItemsSource="{Binding Tenants}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dto:TenantDto">
+                                <Frame Padding="12" Margin="0,4" BackgroundColor="White" CornerRadius="8">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                        <VerticalStackLayout Grid.Column="0">
+                                            <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
+                                            <Label Text="{Binding Email}" FontSize="12" TextColor="Gray"/>
+                                        </VerticalStackLayout>
+                                        
+                                        <Button Grid.Column="1"
+                                                Text="Remove"
+                                                BackgroundColor="#FF3B30"
+                                                TextColor="White"
+                                                Padding="10,5"
+                                                CornerRadius="6"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HouseManagementViewModel}}, Path=RemoveTenantCommand}"
+                                                CommandParameter="{Binding UserId}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </Border>
 
             <!-- Loading Indicator -->
             <ActivityIndicator IsRunning="{Binding IsLoading}"
